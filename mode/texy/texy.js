@@ -57,7 +57,7 @@ CodeMirror.defineMode("texy", function(config, modeConfig) {
       } else if (aChar === '<' && stream.match(/^\w/, false)) {
           token = Tokenizers.html(new Context(Tokenizers.html, context), context, state);
 
-      } else if (lines.withNext(function (s) { return s.match(headerRE, false); })) {
+      } else if (lines.withNext(function (s) { return s.match(headerRE); })) {
           stream.eatWhile(textRE);
           token.name = 'header';
           state.headingLevel = headerLevels[aChar];

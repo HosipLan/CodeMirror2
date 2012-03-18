@@ -18,7 +18,7 @@ CodeMirror.defineMode("texy", function(config, modeConfig) {
   }
 
   var headerLevels = {'#':1, '*':2, '=':3, '-':4};
-  var headerRE = new RegExp('^(?:\\' + keysOf(headerLevels).join('{2,}|\\') + '{2,})');
+  var headerRE = new RegExp('^(?:\\' + keysOf(headerLevels).join('{2,}|\\') + '{2,})$');
   var textRE = /^[^\[#=*-_\\<>`]+/;
 
 
@@ -45,7 +45,7 @@ CodeMirror.defineMode("texy", function(config, modeConfig) {
 
 
 
-  Tokenizers.default = function(stream, context, state) { console.log(['default', stream, context, state]);
+  Tokenizers.default = function(stream, context, state, lines) {
       var token = new Token(null, context);
       var aChar = stream.next();
 
@@ -56,6 +56,11 @@ CodeMirror.defineMode("texy", function(config, modeConfig) {
 
       } else if (aChar === '<' && stream.match(/^\w/, false)) {
           token = Tokenizers.html(new Context(Tokenizers.html, context), context, state);
+
+      } else if (lines.isNext(function (s) { return s.match(headerRE, false); })) {
+          stream.eatWhile(textRE);
+          token.name = 'header';
+          state.headingLevel = headerLevels[aChar];
 
       } else {
           stream.eatWhile(textRE);
@@ -93,12 +98,12 @@ CodeMirror.defineMode("texy", function(config, modeConfig) {
         return copyKeys(['context', 'headingLevel', 'bold', 'italic'], state, newState);
     },
 
-    token: function(stream, state) {
+    token: function(stream, state, lines) {
         if (stream.eatSpace()) {
             return null;
         }
 
-        var token = state.context.next(stream, state.context, state);
+        var token = state.context.next(stream, state.context, state, lines);
         state.context = token.context;
         state.lastToken = token;
 

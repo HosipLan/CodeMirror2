@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+  <head>
+    <title>CodeMirror: Texy mode</title>
+    <link rel="stylesheet" href="../../lib/codemirror.css">
+    <script src="../../lib/codemirror.js"></script>
+    <script src="../xml/xml.js"></script>
+    <script src="texy.js"></script>
+    <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+    <link rel="stylesheet" href="../../doc/docs.css">
+  </head>
+  <body>
+    <h1>CodeMirror: Texy mode</h1>
+
+<form><textarea id="code" name="code">
+Filozofie
+#########
+
+Nástroj Texy vznikl proto.
+
+
+Filozofie
+=========
+
+Nástroj Texy vznikl proto.
+
+
+Filozofie
+*********
+
+Nástroj Texy vznikl proto.
+
+
+Filozofie
+---------
+
+Nástroj Texy vznikl proto.
+
+
+## Filozofie
+
+Nástroj Texy vznikl proto.
+
+
+== Filozofie
+
+Nástroj Texy vznikl proto.
+
+
+** Filozofie
+
+Nástroj Texy vznikl proto.
+
+
+-- Filozofie
+
+Nástroj Texy vznikl proto.
+</textarea></form>
+
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode: 'texy',
+        lineNumbers: true,
+        matchBrackets: true,
+        theme: "default"
+      });
+    </script>
+
+    <p><strong>MIME types defined:</strong> <code>text/x-texy</code>.</p>
+
+  </body>
+</html>
